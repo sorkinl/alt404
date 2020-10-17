@@ -1,47 +1,41 @@
 <html>
-  <head>
+
+<head>
     <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
     <script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
-    <script>
-        console.log("Gets called")
-        $ = (sel) => document.querySelector(sel)
-        $$ = (sel) => document.querySelectorAll(sel)
-        on = (elem, type, hand) => elem.addEventListener(type,hand)
-        let hit = false
-let resetId = 0
-const resetBall = () => {
-    console.log("Gets called")
-    clearTimeout(resetId)
-    $("#ball").body.position.set(0, 0.6,-4)
-    $("#ball").body.velocity.set(0, 5,0)
-    $("#ball").body.angularVelocity.set(0, 0,0)
-    hit = false
-    resetId = setTimeout(resetBall,6000)
-}
-    </script>
-  </head>
-  <body>
-    <a-scene
-    networked-scene="
+</head>
+
+<body>
+    <a-scene networked-scene="
   app: myApp;
   room: room1;
   debug: true;
-"
-physics="debug:true;"
-    >
-    <a-assets>
-        <img id="chessboard" src="img/chessboard.png">
-        <img id="sky" src="img/sky.png">
-        <a-assets-item id="chessboard-set-obj" src="assets\4.88_chess_scene.obj"></a-assets-item>
-        <a-assets-item id="chessboard-set-mtl" src="assets\4.88_chess_scene.mtl"></a-assets-item>
-    </a-assets>
-    <a-sky src="#sky"></a-sky>
-    <a-plane src="#chessboard" position="0 0 -4" rotation="-90 0 0" width="4" height="4"></a-plane>
-    <!-- <a-entity color="#fff" obj-model="obj: #chessboard-set-obj; mtl: #chessboard-set-mtl"></a-entity> -->
-</a-scene>
+" physics="debug:true;">
+        <a-camera>
+           <!--  <a-entity cursor="fuse: true; fuseTimeout: 1500" position="0 0 -1"
+                geometry="primitive: sphere; radius: 0.005" material="color: #000000; shader: flat; opacity: 0.5"
+                animation="property: scale; to: 3 3 3; dur: 1500; begin: cursor-fusing; fill: backwards"></a-entity> -->
+            <a-cursor></a-cursor>
+        </a-camera>
+        <a-assets>
+            <img id="chessboard" src="img/chessboard.png">
+            <img id="sky" src="img/sky.png">
+            <a-assets-item id="chessboard-set-obj" src="assets\4.88_chess_scene.obj"></a-assets-item>
+            <a-assets-item id="chessboard-set-mtl" src="assets\4.88_chess_scene.mtl"></a-assets-item>
+            <a-assets-item id="chess-knight-obj" src="assets/Knight/white.obj"></a-assets-item>
+            <a-assets-item id="chess-knight-mtl" src="assets/Knight/white.mtl"></a-assets-item>
+        </a-assets>
+        <a-sky src="#sky"></a-sky>
+        <a-plane src="#chessboard" position="0 0 -4" rotation="-90 0 0" width="4" height="4"></a-plane>
+        <!-- <a-entity color="#fff" obj-model="obj: #chessboard-set-obj; mtl: #chessboard-set-mtl"></a-entity> -->
+        <a-entity rotation="180 0 180" scale="0.25 0.25 0.25" position="1.2 0.25 -2.1" color="#fff" obj-model="obj: #chess-knight-obj; mtl: #chess-knight-mtl"
+            event-set__enter="_event: mouseenter; scale: 0.26 0.26 0.26"
+            event-set__leave="_event: mouseleave; scale: 0.25 0.25 0.25"></a-entity>
+    </a-scene>
 
-  </body>
-  
+</body>
+
 </html>
