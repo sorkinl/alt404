@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "My first multi-user virtual reality",
   "scripts": {
-    "start": "node ./server/index.js"
+    "start": "nodemon ./index.js"
   },
   "author": "HackGT-Alt404",
   "dependencies": {
-    "networked-aframe": "^0.7.0"
+    "networked-aframe": "^0.7.0",
+    "nodemon": "^2.0.5"
   }
 }
