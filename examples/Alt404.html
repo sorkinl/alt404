@@ -34,10 +34,12 @@ physics="debug:true;"
     <a-assets>
         <img id="chessboard" src="img/chessboard.png">
         <img id="sky" src="img/sky.png">
+        <a-assets-item id="chessboard-set-obj" src="assets\4.88_chess_scene.obj"></a-assets-item>
+        <a-assets-item id="chessboard-set-mtl" src="assets\4.88_chess_scene.mtl"></a-assets-item>
     </a-assets>
     <a-sky src="#sky"></a-sky>
     <a-plane src="#chessboard" position="0 0 -4" rotation="-90 0 0" width="4" height="4"></a-plane>
-         
+    <!-- <a-entity color="#fff" obj-model="obj: #chessboard-set-obj; mtl: #chessboard-set-mtl"></a-entity> -->
 </a-scene>
 
   </body>
