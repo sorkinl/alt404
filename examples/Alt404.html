@@ -6,20 +6,55 @@
     <script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+    <script
+        src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script>
 </head>
 
 <body>
+    <script>
+        const snap = (point, snap, offset) => {
+            point.x = Math.floor(point.x / snap.x) * snap.x + offset.x;
+            point.z = Math.floor(point.z / snap.z) * snap.z + offset.z;
+
+            return point;
+        }
+        AFRAME.registerComponent('cursor-listener', {
+
+            init: function () {
+                var piece;
+                this.el.addEventListener('click', function (evt) {
+                    console.log(evt.detail)
+
+                    if (this.is('selected')) {
+                        var point = evt.detail.intersection.point;
+                        console.log(piece + "sel")
+                        this.removeState('selected');
+                        var newPos = snap(point, { x: 0.5, z: 0.5 }, { x: 0.25, z: 0.25 })
+                        piece.setAttribute('position', `${newPos.x} 0.25 ${newPos.z}`);
+
+                    } else if (evt.detail.intersectedEl.id != "") {
+                        piece = document.querySelector("#" + evt.detail.intersectedEl.id);
+                        console.log(evt.detail.intersectedEl.id)
+                        this.addState('selected');
+                        console.log(piece)
+                    }
+                })
+            }
+        })
+    </script>
+
     <a-scene networked-scene="
   app: myApp;
   room: room1;
   debug: true;
-" physics="debug:true;">
-        <a-camera>
-           <!--  <a-entity cursor="fuse: true; fuseTimeout: 1500" position="0 0 -1"
-                geometry="primitive: sphere; radius: 0.005" material="color: #000000; shader: flat; opacity: 0.5"
-                animation="property: scale; to: 3 3 3; dur: 1500; begin: cursor-fusing; fill: backwards"></a-entity> -->
-            <a-cursor></a-cursor>
-        </a-camera>
+" physics="debug:true;" log="HELLOOOO">
+        <a-entity position="0 2 -1">
+            <a-entity camera look-controls mouse-cursor>
+                <a-cursor fuse="false" position="0 0 -1"
+                    geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                    material="color: black; shader: flat" cursor-listener></a-cursor>
+            </a-entity>
+        </a-entity>
         <a-assets>
             <img id="chessboard" src="img/chessboard.png">
             <img id="sky" src="img/sky.png">
@@ -28,10 +63,12 @@
             <a-assets-item id="chess-knight-obj" src="assets/Knight/white.obj"></a-assets-item>
             <a-assets-item id="chess-knight-mtl" src="assets/Knight/white.mtl"></a-assets-item>
         </a-assets>
-        <a-sky src="#sky"></a-sky>
+        <a-sky src="#sky" theta-length="180"></a-sky>
         <a-plane src="#chessboard" position="0 0 -4" rotation="-90 0 0" width="4" height="4"></a-plane>
+        <!-- <a-cylinder id="#board" src="#chessboard" radius="10"></a-cylinder> -->
         <!-- <a-entity color="#fff" obj-model="obj: #chessboard-set-obj; mtl: #chessboard-set-mtl"></a-entity> -->
-        <a-entity rotation="180 0 180" scale="0.25 0.25 0.25" position="1.2 0.25 -2.1" color="#fff" obj-model="obj: #chess-knight-obj; mtl: #chess-knight-mtl"
+        <a-entity id="horsie" rotation="180 0 180" scale="0.25 0.25 0.25" position="1.2 0.25 -2.1" color="#fff"
+            obj-model="obj: #chess-knight-obj; mtl: #chess-knight-mtl"
             event-set__enter="_event: mouseenter; scale: 0.26 0.26 0.26"
             event-set__leave="_event: mouseleave; scale: 0.25 0.25 0.25"></a-entity>
     </a-scene>
