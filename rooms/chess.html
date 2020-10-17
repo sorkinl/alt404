@@ -4,6 +4,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
     <script src="https://unpkg.com/networked-aframe/dist/networked-aframe.min.js"></script>
     <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
+<<<<<<< HEAD
   </head>
   <body>
     <a-scene
@@ -22,3 +23,61 @@
     </a-scene>
   <body/>
 <html/>
+=======
+    <!-- Mesh Inspector -->
+    <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <script>
+            console.log("Gets called")
+            $ = (sel) => document.querySelector(sel)
+            $$ = (sel) => document.querySelectorAll(sel)
+            on = (elem, type, hand) => elem.addEventListener(type,hand)
+            let hit = false
+    let resetId = 0
+    const resetBall = () => {
+        console.log("Gets called")
+        clearTimeout(resetId)
+        $("#ball").body.position.set(0, 0.6,-4)
+        $("#ball").body.velocity.set(0, 5,0)
+        $("#ball").body.angularVelocity.set(0, 0,0)
+        hit = false
+        resetId = setTimeout(resetBall,6000)
+    }
+    </script>
+  </head>
+  <body>
+    <a-scene
+    networked-scene="
+        app: myApp;
+        room: room1;
+        debug: true;"
+    physics="debug:true;"
+    inspector-plugin-recast
+    nav-debug-pointer>
+    <!-- Assets -->
+    <a-assets>
+        <img id="chessboard" src="img/chessboard.png">
+        <img id="sky" src="img/sky.png">
+        <a-assets-item id="chessboard-set-obj" src="assets\4.88_chess_scene.obj"></a-assets-item>
+        <a-assets-item id="chessboard-set-mtl" src="assets\4.88_chess_scene.mtl"></a-assets-item>
+        <!--Movement Mesh-->
+        <a-asset-item id="movement-mesh" src="#"></a-assets-item>
+    </a-assets>
+
+    <!--Sky-->
+    <a-sky src="#sky"></a-sky>
+
+    <!--Chessboard-->
+    <a-plane src="#chessboard" position="0 1 -4" rotation="-90 0 0" width="4" height="4"></a-plane>
+
+    <!--Ground Plane -->
+    <a-plane color="teal" shader"flat" position="0 0 0" rotation="-90 0 0" scale="8 8 8" width="2" height="2"></a-plane>
+
+    <!--Movement Mesh-->
+    <a-entity gltf-model="#" nav-mesh></a-entity>
+    <!-- <a-entity color="#fff" obj-model="obj: #chessboard-set-obj; mtl: #chessboard-set-mtl"></a-entity> -->
+</a-scene>
+
+  </body>
+
+</html>
+>>>>>>> master
