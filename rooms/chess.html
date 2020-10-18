@@ -8,6 +8,8 @@
   <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
   <script src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script>
   <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+  <!--Mobile Axis Controls-->
+  <script src="https://morandd.github.io/aframe-multitouch-look-controls/multitouch-look-controls.js"></script>
 </head>
 
 <body>
@@ -96,7 +98,7 @@
   >
     <!-- Assets -->
     <a-entity position="0 2 -1">
-      <a-entity camera look-controls mouse-cursor>
+      <a-entity camera multitouch-look-controls mouse-cursor wasd-controls>
         <a-cursor fuse="false" position="0 0 -1" geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
           material="color: black; shader: flat" cursor-listener></a-cursor>
       </a-entity>
@@ -150,8 +152,8 @@
       <a-assets-item id="chess-bQueen-mtl" src="assets/Queen/black.mtl"></a-assets-item>
 
       <!-- Team 2 Rook -->
-      <a-assets-item id="chess-wRook-obj" src="assets/Rook/black.obj"></a-assets-item>
-      <a-assets-item id="chess-wRook-mtl" src="assets/Rook/black.mtl"></a-assets-item>
+      <a-assets-item id="chess-bRook-obj" src="assets/Rook/black.obj"></a-assets-item>
+      <a-assets-item id="chess-bRook-mtl" src="assets/Rook/black.mtl"></a-assets-item>
     </a-assets>
 
     <!--Camera Rig-->
@@ -175,8 +177,6 @@
         >
         </a-entity>
       </a-entity>
-      <!--Teleport Controls-->
-      <a-entity id="teleportControls" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
     </a-entity>
 
     <!--Sky-->
@@ -199,7 +199,7 @@
       obj-model="obj: #chess-wKnight-obj; mtl: #chess-wKnight-mtl"
       event-set__enter="_event: mouseenter; scale: 0.26 0.26 0.26"
       event-set__leave="_event: mouseleave; scale: 0.25 0.25 0.25"></a-entity>
-    
+
     <!--Rook-->
     <a-entity id="rook1" rotation="180 0 180" scale="0.25 0.25 0.25" position="-1.8 1.666 -2.1" color="#fff"
       obj-model="obj: #chess-wRook-obj; mtl: #chess-wRook-mtl"
@@ -221,19 +221,19 @@
       obj-model="obj: #chess-bBishop-obj; mtl: #chess-wBishop-mtl"
       event-set__enter="_event: mouseenter; scale: 3.01 3.01 3.01"
       event-set__leave="_event: mouseleave; scale: 3 3 3"></a-entity>
-    
+
     <!--King-->
     <a-entity id="king" rotation="180 55 179" scale="3 3 3" position="-0.2 1.530 -2.1" color="#fff"
       obj-model="obj: #chess-wKing-obj; mtl: #chess-wKing-mtl"
       event-set__enter="_event: mouseenter; scale: 3.01 3.01 3.01"
       event-set__leave="_event: mouseleave; scale: 3 3 3"></a-entity>
-    
+
     <!--Queen-->
     <a-entity id="queen" rotation="-20 0 -10" scale="5 5 5" position="0.2 1.487 -2.1" color="#fff"
       obj-model="obj: #chess-wQueen-obj; mtl: #chess-wQueen-mtl"
       event-set__enter="_event: mouseenter; scale: 5.01 5.01 5.01"
       event-set__leave="_event: mouseleave; scale: 5 5 5"></a-entity>
-    
+
     <!--Pawns-->
     <a-entity id="pawn1" rotation="180 0 180" scale="0.25 0.25 0.25" position="1.2 .957 -2.6" color="#fff"
       obj-model="obj: #chess-wPawn-obj; mtl: #chess-wPawn-mtl"
@@ -281,46 +281,46 @@
       obj-model="obj: #chess-bKnight-obj; mtl: #chess-bKnight-mtl"
       event-set__enter="_event: mouseenter; scale: 2.01 2.01 2.01"
       event-set__leave="_event: mouseleave; scale: 2 2 2"></a-entity>
-    
+
     <a-entity id="bhorse" rotation="0 90 0" scale="2 2 2" position="-1.26 1.270 -5.769" color="#fff"
       obj-model="obj: #chess-bKnight-obj; mtl: #chess-bKnight-mtl"
       event-set__enter="_event: mouseenter; scale: 2.01 2.01 2.01"
       event-set__leave="_event: mouseleave; scale: 2 2 2"></a-entity>
-  
+
     <!--Rook-->
     <a-entity id="bRook" rotation="0 90 0" scale="2 2 2" position="1.73 1.162 -5.744" color="#fff"
       obj-model="obj: #chess-bRook-obj; mtl: #chess-bRook-mtl"
       event-set__enter="_event: mouseenter; scale: 2.01 2.01 2.01"
       event-set__leave="_event: mouseleave; scale: 2 2 2"></a-entity>
-  
+
     <a-entity id="bRook2" rotation="0 90 0" scale="2 2 2" position="-1.73 1.162 -5.744" color="#fff"
       obj-model="obj: #chess-bRook-obj; mtl: #chess-bRook-mtl"
       event-set__enter="_event: mouseenter; scale: 2.01 2.01 2.01"
       event-set__leave="_event: mouseleave; scale: 2 2 2"></a-entity>
-  
+
     <!--Bishop-->
     <a-entity id="bBishop" rotation="0 90 0" scale="2 2 2" position="0.75 1.270 -5.728" color="#fff"
       obj-model="obj: #chess-bBishop-obj; mtl: #chess-bBishop-mtl"
       event-set__enter="_event: mouseenter; scale: 2.01 2.01 2.01"
       event-set__leave="_event: mouseleave; scale: 2 2 2"></a-entity>
-  
+
     <a-entity id="bBishop2" rotation="0 90 0" scale="2 2 2" position="-0.75 1.270 -5.728" color="#fff"
       obj-model="obj: #chess-bBishop-obj; mtl: #chess-bBishop-mtl"
       event-set__enter="_event: mouseenter; scale: 2.01 2.01 2.01"
       event-set__leave="_event: mouseleave; scale: 2 2 2"></a-entity>
-    
+
     <!--King-->
     <a-entity id="bKing" rotation="0 90 0" scale="2 2 2" position="0.252 1.418 -5.728" color="#fff"
       obj-model="obj: #chess-bKing-obj; mtl: #chess-bKing-mtl"
       event-set__enter="_event: mouseenter; scale: 2.01 2.01 2.01"
       event-set__leave="_event: mouseleave; scale: 2 2 2"></a-entity>
-  
+
     <!--Queen-->
     <a-entity id="bQueen" rotation="0 90 0" scale="2 2 2" position="-0.26 1.396 -5.745" color="#fff"
       obj-model="obj: #chess-bQueen-obj; mtl: #chess-bQueen-mtl"
       event-set__enter="_event: mouseenter; scale: 2.01 2.01 2.01"
       event-set__leave="_event: mouseleave; scale: 2 2 2"></a-entity>
-    
+
     <!--Pawn-->
     <a-entity id="bPawn" rotation="0 90 0" scale="2 2 2" position="1.754 1.198 -5.260" color="#fff"
       obj-model="obj: #chess-bPawn-obj; mtl: #chess-bPawn-mtl"
@@ -363,7 +363,7 @@
       event-set__leave="_event: mouseleave; scale: 2 2 2"></a-entity>
 
     <a-entity networked="template:#piece; data-obj:#chess-role-obj; data-mtl:#chess-role-mtl"></a-entity>
-  
+
   </a-scene>
 </body>
 
