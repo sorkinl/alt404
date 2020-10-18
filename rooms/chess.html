@@ -7,7 +7,6 @@
   <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script>
   <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.13.1/dist/aframe-extras.min.js"></script>
   <script src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script>
-  <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
   <!--Mobile Axis Controls-->
   <script src="https://morandd.github.io/aframe-multitouch-look-controls/multitouch-look-controls.js"></script>
 </head>
@@ -93,8 +92,6 @@
     cursor="rayOrigin:mouse"
     networked-scene=" app: myApp; room: room1; debug: true;"
     physics="debug:true;"
-    inspector-plugin-recast
-    nav-debug-pointer
   >
     <!-- Assets -->
     <a-entity position="0 2 -1">
@@ -163,7 +160,7 @@
       <!--Camera-->
       <a-entity id="head"
         camera
-        look-controls
+        multitouch-look-controls
         mouse-cursor
         wasd-controls
       >
