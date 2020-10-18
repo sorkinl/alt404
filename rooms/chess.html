@@ -16,36 +16,76 @@
 
 <body>
   <script>
+    // Imports
+    const { Chess } = require('chess.js');
+
+    // Helper functions
     const snap = (point, snap, offset) => {
       point.x = Math.floor(point.x / snap.x) * snap.x + offset.x;
       point.z = Math.floor(point.z / snap.z) * snap.z + offset.z;
       return point;
     }
 
+    // Systems
+    AFRAME.registerSystem('logic', {
+      schema: {
+        game,
+      },
+      init: () => {
+        game = new Chess();
+      },
+      reset: () => {
+        game = new Chess();
+      }
+    });
+
+    // Components
+
+    // Game Piece
+    AFRAME.registerComponent('gamepiece', {
+      schema: {
+        pos: null,
+        role: null,
+      },
+
+      init: (position, role, color) => {
+        // find relative position within gameboard from absolute scene position
+        this.data.role = role;
+      },
+
+      move: (pos) => {
+        const result = this.system.game.move(`${this.data.role}${this.data.pos}`);
+        if (result === null) {
+          // indicate to the players w/ flashing red for invalid move
+        } else {
+          // translate pos from this.system.game into absolute scene position
+          // teleport piece to new pos
+        }
+      }
+    })
+
+    // Cursor Listener
     AFRAME.registerComponent('cursor-listener', {
       init: function () {
         var piece;
         this.el.addEventListener('click', function (evt) {
           if (this.is('selected')) {
             var point = evt.detail.intersection.point;
-            console.log(piece + "sel")
             this.removeState('selected');
             var newPos = snap(point, { x: 0.5, z: 0.5 }, { x: 0.25, z: 0.25 })
             piece.setAttribute('position', `${newPos.x} 1.18 ${newPos.z}`);
           } else if (evt.detail.intersectedEl.id != "") {
             piece = document.querySelector("#" + evt.detail.intersectedEl.id);
-            console.log(evt.detail.intersectedEl.id)
             this.addState('selected');
-            console.log(piece)
           }
         });
       }
     });
 
+    // Piece Spawner
     AFRAME.registerComponent('spawn-pieces', {
       init: function () {
         var whiteSpawned = document.querySelector("#" + "horsie");
-        console.log(whiteSpawned);
       }
     });
   </script>
@@ -92,7 +132,7 @@
       <!--Templates-->
       <template id="horsie-template">
         <a-entity id="horsie" 
-          otation="180 0 180"
+          rotation="180 0 180"
           scale="0.25 0.25 0.25"
           position="1.2 1.18 -2.1"
           color="#fff"
