@@ -10,43 +10,91 @@
     src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script>
   <!-- Mesh Inspector -->
   <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
-
 </head>
 
 <body>
   <script>
+    // Imports
+    const { Chess } = require('chess.js');
+
+    // Helper functions
     const snap = (point, snap, offset) => {
       point.x = Math.floor(point.x / snap.x) * snap.x + offset.x;
       point.z = Math.floor(point.z / snap.z) * snap.z + offset.z;
-
       return point;
     }
-    AFRAME.registerComponent('cursor-listener', {
 
+    // Systems
+    AFRAME.registerSystem('logic', {
+      schema: {
+        game,
+      },
+      init: () => {
+        game = new Chess();
+      },
+      reset: () => {
+        game = new Chess();
+      }
+    });
+
+    // Components
+
+    // Game Piece
+    AFRAME.registerComponent('gamepiece', {
+      schema: {
+        pos: null,
+        role: null,
+      },
+
+      init: (position, role, color) => {
+        // find relative position within gameboard from absolute scene position
+        this.data.role = role;
+      },
+
+      move: (pos) => {
+        const result = this.system.game.move(`${this.data.role}${this.data.pos}`);
+        if (result === null) {
+          // indicate to the players w/ flashing red for invalid move
+        } else {
+          // translate pos from this.system.game into absolute scene position
+          // teleport piece to new pos
+        }
+      }
+    })
+
+    // Cursor Listener
+    AFRAME.registerComponent('cursor-listener', {
       init: function () {
         var piece;
         this.el.addEventListener('click', function (evt) {
-          console.log(evt.detail)
-
           if (this.is('selected')) {
             var point = evt.detail.intersection.point;
-            console.log(piece + "sel")
             this.removeState('selected');
             var newPos = snap(point, { x: 0.5, z: 0.5 }, { x: 0.25, z: 0.25 })
-            piece.setAttribute('position', `${newPos.x} 1.5 ${newPos.z}`);
-
+            piece.setAttribute('position', `${newPos.x} 1.18 ${newPos.z}`);
           } else if (evt.detail.intersectedEl.id != "") {
             piece = document.querySelector("#" + evt.detail.intersectedEl.id);
-            console.log(evt.detail.intersectedEl.id)
             this.addState('selected');
-            console.log(piece)
           }
-        })
+        });
       }
-    })
+    });
+
+    // Piece Spawner
+    AFRAME.registerComponent('spawn-pieces', {
+      init: function () {
+        var whiteSpawned = document.querySelector("#" + "horsie");
+      }
+    });
   </script>
-  <a-scene networked-scene=" app: myApp; room: room1; debug: true;" physics="debug:true;" inspector-plugin-recast
-    nav-debug-pointer>
+
+  <a-scene
+    cursor="rayOrigin:mouse"
+    networked-scene=" app: myApp; room: room1; debug: true;"
+    physics="debug:true;"
+    inspector-plugin-recast
+    nav-debug-pointer
+  >
     <!-- Assets -->
     <a-entity position="0 2 -1">
       <a-entity camera look-controls mouse-cursor>
@@ -111,6 +159,31 @@
         </a-assets-item>
     </a-assets>
 
+    <!--Camera Rig-->
+    <a-entity id="cameraRig"
+      position="0 2 -1"
+    >
+      <!--Camera-->
+      <a-entity id="head"
+        camera
+        look-controls
+        mouse-cursor
+        wasd-controls
+      >
+        <!--Cursor-->
+        <a-entity id="clicker"
+          cursor="fuse: false; rayOrigin: mouse;"
+          position="0 0 -1"
+          geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+          material="color: black; shader: flat"
+          cursor-listener
+        >
+        </a-entity>
+      </a-entity>
+      <!--Teleport Controls-->
+      <a-entity id="teleportControls" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
+    </a-entity>
+
     <!--Sky-->
     <a-sky src="#sky"></a-sky>
 
@@ -118,8 +191,7 @@
     <a-plane src="#chessboard" position="0 1 -4" rotation="-90 0 0" width="4" height="4"></a-plane>
 
     <!--Ground Plane -->
-    <a-plane color="teal" shader="flat" position="0 0 0" rotation="-90 0 0" scale="8 8 8" width="2" height="2">
-    </a-plane>
+    <a-plane color="teal" shader="flat" position="0 0 0" rotation="-90 0 0" scale="8 8 8" width="2" height="2"></a-plane>
 
     <!--Movement Mesh-->
     <a-entity gltf-model="#" nav-mesh></a-entity>
@@ -295,11 +367,10 @@
     obj-model="obj: #chess-bPawn-obj; mtl: #chess-bPawn-mtl"
     event-set__enter="_event: mouseenter; scale: 2.01 2.01 2.01"
     event-set__leave="_event: mouseleave; scale: 2 2 2"></a-entity>
-      event-set__enter="_event: mouseenter; scale: 0.31 0.31 0.31"
-      event-set__leave="_event: mouseleave; scale: 0.3 0.3 0.3"></a-entity>
 
+  <a-entity networked="template:#piece; data-obj:#chess-role-obj; data-mtl:#chess-role-mtl"></a-entity>
+  
   </a-scene>
-
 </body>
 
 </html>
